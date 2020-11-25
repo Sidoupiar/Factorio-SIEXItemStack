@@ -48,9 +48,7 @@ for key , value in pairs{ mult = { 1 , function( base , size ) return base * siz
 		for name , type in pairs( SITypes.stackableItem ) do
 			local size = SIStartup.SIEXIS[key.."_"..type]()
 			if size ~= value[1] then
-				for n , m in pairs( SIGen.GetList( type ) ) do
-					m.stack_size = math.Cnum_i( value[2]( m.stack_size , size ) , max , min )
-				end
+				for n , m in pairs( SIGen.GetList( type ) ) do m.stack_size = math.Cnum_i( value[2]( m.stack_size , size ) , max , min ) end
 			end
 		end
 	end
