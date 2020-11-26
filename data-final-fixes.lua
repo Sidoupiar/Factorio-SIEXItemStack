@@ -38,7 +38,7 @@ if SIStartup.SIEXIS.enable_param() then
 	if distanceUndergrundPipe ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.pipeGround ) ) do for n , m in pairs( v.fluid_box.pipe_connections ) do if m.max_underground_distance then m.max_underground_distance = math.Cnum_i( m.max_underground_distance*distanceUndergrundPipe , max , min ) end end end end
 end
 
-for key , value in pairs{ mult = { 1 , function( base , size ) return base * size end } , size = { 0 , function( base , size ) return base + size end} } do
+for key , value in pairs{ mult = { 1 , function( base , number ) return base * number end } , size = { 0 , function( base , number ) return base + number end } } do
 	if SIStartup.SIEXIS["enable_"..key]() then
 		local min = SIStartup.SIEXIS[key.."_min"]()
 		local max = SIStartup.SIEXIS[key.."_max"]()
