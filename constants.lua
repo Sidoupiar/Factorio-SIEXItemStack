@@ -3,7 +3,7 @@ local data =
 	name = "siexis" ,
 	settings =
 	{
-		enable_param = { "bool" , "startup" , true } ,
+		enable_param = { "bool" , "startup" , false } ,
 		during_tool = { "double" , "startup" , 1 , 0 , 1000000000 } ,
 		during_tool_repair = { "double" , "startup" , 1 , 0 , 1000000000 } ,
 		speed_tool_repair = { "double" , "startup" , 1 , 0 , 1000000000 } ,
@@ -15,7 +15,7 @@ local data =
 	}
 }
 for key , value in pairs{ mult = { 1 , 0 } , size = { 0 , -1000000000 } } do
-	data.settings["enable_"..key] = { "bool" , "startup" , true }
+	data.settings["enable_"..key] = { "bool" , "startup" , false }
 	data.settings[key.."_min"] = { "int" , "startup" , 0 , 0 , 1000000000 }
 	data.settings[key.."_max"] = { "int" , "startup" , 0 , 0 , 1000000000 }
 	for name , type in pairs( SITypes.stackableItem ) do data.settings[key.."_"..type] = { "double" , "startup" , value[1] , value[2] , 1000000000 } end
