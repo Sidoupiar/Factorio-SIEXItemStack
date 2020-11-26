@@ -32,10 +32,10 @@ if SIStartup.SIEXIS.enable_param() then
 	if distanceCircuit ~= 1 then for i , v in pairs( SITypes.entity ) do for n , m in pairs( SIGen.GetList( v ) ) do if m.circuit_wire_max_distance then m.circuit_wire_max_distance = math.Cnum_i( m.circuit_wire_max_distance*distanceCircuit , max , min ) end end end end
 	
 	local distanceUndergrundBelt = SIStartup.SIEXIS.distance_undergrund_belt()
-	if distanceUndergrundBelt ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.belt_g ) ) do v.max_distance = math.Cnum_i( v.max_distance*distanceUndergrundBelt , max , min ) end end
+	if distanceUndergrundBelt ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.beltGround ) ) do v.max_distance = math.Cnum_i( v.max_distance*distanceUndergrundBelt , max , min ) end end
 	
 	local distanceUndergrundPipe = SIStartup.SIEXIS.distance_undergrund_pipe()
-	if distanceUndergrundPipe ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.pipe_g ) ) do for n , m in pairs( v.fluid_box.pipe_connections ) do if m.max_underground_distance then m.max_underground_distance = math.Cnum_i( m.max_underground_distance*distanceUndergrundPipe , max , min ) end end end end
+	if distanceUndergrundPipe ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.pipeGround ) ) do for n , m in pairs( v.fluid_box.pipe_connections ) do if m.max_underground_distance then m.max_underground_distance = math.Cnum_i( m.max_underground_distance*distanceUndergrundPipe , max , min ) end end end end
 end
 
 for key , value in pairs{ mult = { 1 , function( base , size ) return base * size end } , size = { 0 , function( base , size ) return base + size end} } do
