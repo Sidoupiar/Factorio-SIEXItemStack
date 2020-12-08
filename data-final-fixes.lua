@@ -38,6 +38,7 @@ if SIStartup.SIEXIS.enable_param() then
 	if distanceUndergrundPipe ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.pipeGround ) ) do for n , m in pairs( v.fluid_box.pipe_connections ) do if m.max_underground_distance then m.max_underground_distance = math.Cnum_i( m.max_underground_distance*distanceUndergrundPipe , max , min ) end end end end
 end
 
+local ignoreNotStackable = SIStartup.SIEXIS.ignore_not_stackable()
 for key , value in pairs{ mult = { 1 , function( base , number ) return base * number end } , size = { 0 , function( base , number ) return base + number end } } do
 	if SIStartup.SIEXIS["enable_"..key]() then
 		local min = SIStartup.SIEXIS[key.."_min"]()
@@ -48,7 +49,17 @@ for key , value in pairs{ mult = { 1 , function( base , number ) return base * n
 		for name , type in pairs( SITypes.stackableItem ) do
 			local size = SIStartup.SIEXIS[key.."_"..type]()
 			if size ~= value[1] then
-				for n , m in pairs( SIGen.GetList( type ) ) do m.stack_size = math.Cnum_i( value[2]( m.stack_size , size ) , max , min ) end
+				for n , m in pairs( SIGen.GetList( type ) ) do
+					local flags = m.flags or {}
+					if table.Has( flags , SIFlags.itemFlags.notStackable ) then
+						if ignoreNotStackable and max > 1 then
+							local newFlags = {}
+							for i , flag in pairs( flags ) do if flag ~= SIFlags.itemFlags.notStackable then table.insert( newFlags , flag ) end end
+							m.flags = newFlags
+							m.stack_size = math.Cnum_i( value[2]( m.stack_size , size ) , max , min )
+						end
+					else m.stack_size = math.Cnum_i( value[2]( m.stack_size , size ) , max , min ) end
+				end
 			end
 		end
 	end

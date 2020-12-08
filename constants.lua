@@ -12,6 +12,7 @@ local data =
 		distance_circuit = { "double" , "startup" , 1 , 0 , 1000000000 } ,
 		distance_undergrund_belt = { "double" , "startup" , 1 , 0 , 1000000000 } ,
 		distance_undergrund_pipe = { "double" , "startup" , 1 , 0 , 1000000000 } ,
+		ignore_not_stackable = { "bool" , "startup" , false }
 	}
 }
 for key , value in pairs{ mult = { 1 , 0 } , size = { 0 , -1000000000 } } do
