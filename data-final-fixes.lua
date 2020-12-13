@@ -70,6 +70,8 @@ for key , value in pairs{ mult = { 1 , function( base , number ) return base * n
 	end
 end
 if not baseEnabled and baseStackSize ~= 1 then
+	local min = 1
+	local max = 1000000000
 	for name , type in pairs( SITypes.stackableItem ) do
 		for n , m in pairs( SIGen.GetList( type ) ) do
 			local flags = m.flags or {}
