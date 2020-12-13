@@ -39,8 +39,12 @@ if SIStartup.SIEXIS.enable_param() then
 end
 
 local ignoreNotStackable = SIStartup.SIEXIS.ignore_not_stackable()
+local baseStackSize = SIStartup.SIEXIS.total_stack_size()
+local baseEnabled = false -- 判断是否启用了按类别增加堆叠数量
 for key , value in pairs{ mult = { 1 , function( base , number ) return base * number end } , size = { 0 , function( base , number ) return base + number end } } do
-	if SIStartup.SIEXIS["enable_"..key]() then
+	local enabled = SIStartup.SIEXIS["enable_"..key]()
+	baseEnabled = baseEnabled or enabled
+	if enabled then
 		local min = SIStartup.SIEXIS[key.."_min"]()
 		local max = SIStartup.SIEXIS[key.."_max"]()
 		if min == 0 then min = 1 end
@@ -48,6 +52,7 @@ for key , value in pairs{ mult = { 1 , function( base , number ) return base * n
 		
 		for name , type in pairs( SITypes.stackableItem ) do
 			local size = SIStartup.SIEXIS[key.."_"..type]()
+			if key == "mult" and size == value[1] then size = baseStackSize end
 			if size ~= value[1] then
 				for n , m in pairs( SIGen.GetList( type ) ) do
 					local flags = m.flags or {}
@@ -61,6 +66,21 @@ for key , value in pairs{ mult = { 1 , function( base , number ) return base * n
 					else m.stack_size = math.Cnum_i( value[2]( m.stack_size , size ) , max , min ) end
 				end
 			end
+		end
+	end
+end
+if not baseEnabled and baseStackSize ~= 1 then
+	for name , type in pairs( SITypes.stackableItem ) do
+		for n , m in pairs( SIGen.GetList( type ) ) do
+			local flags = m.flags or {}
+			if table.Has( flags , SIFlags.itemFlags.notStackable ) then
+				if ignoreNotStackable and max > 1 then
+					local newFlags = {}
+					for i , flag in pairs( flags ) do if flag ~= SIFlags.itemFlags.notStackable then table.insert( newFlags , flag ) end end
+					m.flags = newFlags
+					m.stack_size = math.Cnum_i( m.stack_size*baseStackSize , max , min )
+				end
+			else m.stack_size = math.Cnum_i( m.stack_size*baseStackSize , max , min ) end
 		end
 	end
 end
