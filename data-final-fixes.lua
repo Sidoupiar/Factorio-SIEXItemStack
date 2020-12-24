@@ -17,7 +17,7 @@ if SIStartup.SIEXIS.enable_param() then
 	end
 	
 	local speedLab = SIStartup.SIEXIS.speed_lab()
-	if speedLab ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.lab ) ) do v.researching_speed = math.Cnum( v.researching_speed*speedLab , maxFloat , minFloat ) end end
+	if speedLab ~= 1 then for k , v in pairs( SIGen.GetList( SITypes.entity.lab ) ) do v.researching_speed = math.Cnum( (v.researching_speed or 1)*speedLab , maxFloat , minFloat ) end end
 	
 	local magazineAmmo = SIStartup.SIEXIS.magazine_ammo()
 	if magazineAmmo ~= 1 then
